@@ -1,0 +1,33 @@
+console: true
+# Welcome to Serverless!
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: auth-server # NOTE: update this with your service name
+# app and org for use with dashboard.serverless.com
+#app: meet-app
+org: conceptualcarp
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: af-south-1
+  timeout: 60 # optional, in seconds, default is 6
+  environment:
+    CLIENT_ID: ${file(config.json):CLIENT_ID}
+    CLIENT_SECRET: ${file(config.json):CLIENT_SECRET}
+    PROJECT_ID: ${file(config.json):PROJECT_ID}
+    CALENDAR_ID: ${file(config.json):CALENDAR_ID}
+functions:
+  getAuthURL:
+    handler: handler.getAuthURL
+    events:
+      - http:
+          path: api/get-auth-url
+          method: get
